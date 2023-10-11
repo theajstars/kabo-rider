@@ -9,7 +9,7 @@ import {
   Store,
   SubCategory,
   TeamMember,
-  User,
+  Rider,
   Wallet,
 } from "./Types";
 
@@ -27,7 +27,7 @@ export interface LoginResponse {
     status: ResponseStatus;
     response_code: number;
     message: string;
-    data: User;
+    data: Rider;
   };
 }
 export interface GetProductsResponse {
@@ -64,7 +64,7 @@ export interface GetSingleStoreResponse {
     data: SimpleSingleStore;
   };
 }
-export interface GetUserStoreResponse {
+export interface GetRiderStoreResponse {
   data: {
     status: ResponseStatus;
     response_code: number;

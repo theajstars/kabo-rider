@@ -25,9 +25,7 @@ type DrawerAnchorType = "top" | "left" | "bottom" | "right";
 
 export default function Navbar() {
   const navigate = useNavigate();
-  const userContext = useContext(AppContext);
-
-  const cartProducts = userContext?.cart;
+  const riderContext = useContext(AppContext);
   const screenWidth = window.innerWidth;
 
   return (
@@ -39,21 +37,6 @@ export default function Navbar() {
               <img src={Logo} alt="" />
             </Link>
             {RouteList.map((route) => {
-              if (route.route === "cart") {
-                return (
-                  <>
-                    <Link
-                      className="item text-blue-default"
-                      to={`/dashboard/${route.route}`}
-                    >
-                      {route.label}
-                    </Link>
-                    <span className="cart-tag">
-                      {cartProducts ? cartProducts.quantity ?? 0 : 0}
-                    </span>
-                  </>
-                );
-              }
               return (
                 <Link
                   className="item text-blue-default"
@@ -67,7 +50,7 @@ export default function Navbar() {
           <span
             className="flex-row align-center text-blue-default pointer"
             onClick={() => {
-              userContext?.logout();
+              riderContext?.logout();
             }}
           >
             Logout &nbsp; <i className="fal fa-sign-out" />
@@ -81,9 +64,7 @@ export default function Navbar() {
 }
 
 function TemporaryDrawer() {
-  const userContext = useContext(AppContext);
-
-  const cartProducts = userContext?.cart;
+  const riderContext = useContext(AppContext);
   const [state, setState] = React.useState({
     top: false,
     left: false,
@@ -117,39 +98,17 @@ function TemporaryDrawer() {
       </Link>
       <List>
         {RouteList.map((route) => {
-          if (route.route === "cart") {
-            return (
-              <ListItem key={route.label} disablePadding>
-                <ListItemButton href={`/dashboard/${route.route}`}>
-                  <ListItemText
-                    primary={
-                      <span className="flex-row align-center">
-                        Cart &nbsp;
-                        <Chip
-                          color="primary"
-                          label={cartProducts ? cartProducts.quantity ?? 0 : 0}
-                        />
-                      </span>
-                    }
-                  />
-                </ListItemButton>
-              </ListItem>
-            );
-          } else {
-            return (
-              <ListItem key={route.label} disablePadding>
-                <ListItemButton href={`/dashboard/${route.route}`}>
-                  <ListItemText
-                    primary={
-                      <span className="flex-row align-center">
-                        {route.label}
-                      </span>
-                    }
-                  />
-                </ListItemButton>
-              </ListItem>
-            );
-          }
+          return (
+            <ListItem key={route.label} disablePadding>
+              <ListItemButton href={`/dashboard/${route.route}`}>
+                <ListItemText
+                  primary={
+                    <span className="flex-row align-center">{route.label}</span>
+                  }
+                />
+              </ListItemButton>
+            </ListItem>
+          );
         })}
       </List>
       <Divider />
@@ -157,7 +116,7 @@ function TemporaryDrawer() {
         <ListItem disablePadding>
           <ListItemButton
             onClick={() => {
-              userContext?.logout();
+              riderContext?.logout();
             }}
           >
             <ListItemText

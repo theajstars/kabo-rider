@@ -28,7 +28,7 @@ export default function Register() {
   const navigate = useNavigate();
   const { addToast, removeAllToasts } = useToasts();
   const [isLoading, setLoading] = useState<boolean>(false);
-  const [userFormValues, setUserFormValues] = useState<UserFormValuesProps>({
+  const [userFormValues, setRiderFormValues] = useState<UserFormValuesProps>({
     email: "",
     password: "",
     phone: "",
@@ -99,7 +99,7 @@ export default function Register() {
                 sx={{ marginBottom: 4 }}
                 value={userFormValues.username}
                 onChange={(e) =>
-                  setUserFormValues({
+                  setRiderFormValues({
                     ...userFormValues,
                     username: e.target.value,
                   })
@@ -115,7 +115,7 @@ export default function Register() {
                 sx={{ marginBottom: 4 }}
                 value={userFormValues.email}
                 onChange={(e) =>
-                  setUserFormValues({
+                  setRiderFormValues({
                     ...userFormValues,
                     email: e.target.value,
                   })
@@ -129,7 +129,7 @@ export default function Register() {
                 sx={{ marginBottom: 4 }}
                 value={userFormValues.phone}
                 onChange={(e) =>
-                  setUserFormValues({
+                  setRiderFormValues({
                     ...userFormValues,
                     phone: e.target.value,
                   })
@@ -145,7 +145,7 @@ export default function Register() {
               type={userFormValues.showPassword ? "text" : "password"}
               value={userFormValues.password}
               onChange={(e) =>
-                setUserFormValues({
+                setRiderFormValues({
                   ...userFormValues,
                   password: e.target.value,
                 })
@@ -154,7 +154,7 @@ export default function Register() {
             <small
               className="px-12 pointer text-dark"
               onClick={() => {
-                setUserFormValues({
+                setRiderFormValues({
                   ...userFormValues,
                   showPassword: !userFormValues.showPassword,
                 });
@@ -174,7 +174,7 @@ export default function Register() {
               sx={{ mt: 2, mb: 3 }}
               value={userFormValues.referralCode}
               onChange={(e) =>
-                setUserFormValues({
+                setRiderFormValues({
                   ...userFormValues,
                   referralCode: e.target.value,
                 })

@@ -1,4 +1,4 @@
-export interface User {
+export interface Rider {
   address: string;
   bank_details: {
     account_no: string;

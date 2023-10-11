@@ -11,12 +11,7 @@ import DefaultUserImage from "../../Assets/IMG/DefaultUserImage.png";
 
 import { PerformRequest, UploadFile } from "../../Lib/PerformRequest";
 import { Endpoints } from "../../Lib/Endpoints";
-import {
-  DefaultResponse,
-  GetProductsResponse,
-  LoginResponse,
-  UploadFileResponse,
-} from "../../Lib/Responses";
+import { DefaultResponse, UploadFileResponse } from "../../Lib/Responses";
 import MegaLoader from "../../Misc/MegaLoader";
 import { AppContext } from "../DashboardContainer";
 import ProgressCircle from "../../Misc/ProgressCircle";
@@ -33,14 +28,14 @@ interface ProfileFormProps {
 }
 export default function Profile() {
   const navigate = useNavigate();
-  const userContext = useContext(AppContext);
+  const riderContext = useContext(AppContext);
   const inputFileRef = useRef<HTMLInputElement>(null);
   const { addToast, removeAllToasts } = useToasts();
 
   const [isLoading, setLoading] = useState<boolean>(false);
   const [isHoverAvatar, setHoverAvatar] = useState<boolean>(false);
 
-  const [userImage, setUserImage] = useState<File | null>(null);
+  const [userImage, setRiderImage] = useState<File | null>(null);
   const [imageUploading, setImageUploading] = useState<boolean>(false);
   const [profileForm, setProfileForm] = useState<ProfileFormProps>({
     firstName: "",
@@ -81,15 +76,15 @@ export default function Profile() {
         setLoading(false);
       });
       setLoading(false);
-      if (userContext) {
-        userContext?.getUser();
+      if (riderContext) {
+        riderContext?.getRider();
       }
     }
   };
 
-  const getUserImage: any = () => {
-    if (userContext && userContext.user) {
-      const photo = userContext.user.photo ?? "";
+  const getRiderImage: any = () => {
+    if (riderContext && riderContext.rider) {
+      const photo = riderContext.rider.photo ?? "";
       if (photo.length > 0) {
         return photo;
       } else {
@@ -97,7 +92,7 @@ export default function Profile() {
       }
     }
   };
-  const UploadUserImage = async (file: File) => {
+  const UploadRiderImage = async (file: File) => {
     setImageUploading(true);
     const r: UploadFileResponse = await UploadFile(file).catch(() => {
       setImageUploading(false);
@@ -124,20 +119,20 @@ export default function Profile() {
     console.log(userImage);
   }, [userImage]);
   useEffect(() => {
-    if (userContext) {
-      if (userContext.user) {
-        const { user } = userContext;
+    if (riderContext) {
+      if (riderContext.rider) {
+        const { rider } = riderContext;
         setProfileForm({
-          firstName: user?.othernames,
-          lastName: user?.lastname,
-          email: user.email,
-          address: user.address,
-          phone: user.phone,
-          photo: user.photo,
+          firstName: rider?.othernames,
+          lastName: rider?.lastname,
+          email: rider.email,
+          address: rider.address,
+          phone: rider.phone,
+          photo: rider.photo,
         });
       }
     }
-  }, [userContext]);
+  }, [riderContext]);
 
   const textFieldProps: TextFieldProps = {
     variant: "outlined",
@@ -170,7 +165,7 @@ export default function Profile() {
   return (
     <Container maxWidth="lg">
       <div className="profile-container flex-col width-100">
-        {userContext?.user ? (
+        {riderContext?.rider ? (
           <>
             <input
               type="file"
@@ -181,7 +176,7 @@ export default function Profile() {
                 const fileList = e.target.files;
                 const file = fileList ? fileList[0] : undefined;
                 if (file) {
-                  setUserImage(file);
+                  setRiderImage(file);
                 }
               }}
             />
@@ -200,7 +195,7 @@ export default function Profile() {
                     backgroundImage: `url(${
                       userImage
                         ? URL.createObjectURL(userImage)
-                        : getUserImage()
+                        : getRiderImage()
                     })`,
                   }}
                   onMouseEnter={() => {
@@ -230,7 +225,7 @@ export default function Profile() {
                   variant="contained"
                   onClick={() => {
                     if (userImage) {
-                      UploadUserImage(userImage);
+                      UploadRiderImage(userImage);
                     }
                   }}
                   sx={{

@@ -37,7 +37,7 @@ interface WalletTransferForm {
 }
 export default function Wallet() {
   const navigate = useNavigate();
-  const userContext = useContext(AppContext);
+  const riderContext = useContext(AppContext);
   const inputFileRef = useRef<HTMLInputElement>(null);
   const { addToast, removeAllToasts } = useToasts();
 
@@ -56,8 +56,8 @@ export default function Wallet() {
     });
 
   const getUserBankInformation = (param: "name" | "number") => {
-    if (userContext?.user) {
-      const { bank_name, account_no } = userContext.user.bank_details;
+    if (riderContext?.user) {
+      const { bank_name, account_no } = riderContext.user.bank_details;
       switch (param) {
         case "name":
           return bank_name && bank_name.length > 0
@@ -138,7 +138,7 @@ export default function Wallet() {
   return (
     <Container maxWidth="lg">
       <div className="wallet-container flex-col width-100">
-        {userContext?.user ? (
+        {riderContext?.user ? (
           <>
             <div className="top width-100 flex-col">
               <div className="flex-row width-100 align-center justify-between">
@@ -147,7 +147,7 @@ export default function Wallet() {
             </div>
             <div className="flex-col width-100 overview">
               <span className="text-darker px-15 fw-500">Wallet Overview</span>
-              {userContext.wallet ? (
+              {riderContext.wallet ? (
                 <div className="flex-row width-100 items align-center justify-between">
                   <div className="flex-row width-100 align-center justify-between item">
                     <div className="left flex-row align-center">
@@ -162,7 +162,7 @@ export default function Wallet() {
                     <span className="px-20 fw-600 text-blue-default text-darker">
                       ₦
                       {getFinancialValueFromNumeric(
-                        userContext.wallet.available_balance
+                        riderContext.wallet.available_balance
                       )}
                     </span>
                   </div>
@@ -181,7 +181,7 @@ export default function Wallet() {
                     <span className="px-20 fw-600 text-blue-default text-darker">
                       ₦
                       {getFinancialValueFromNumeric(
-                        userContext.wallet.ledger_balance
+                        riderContext.wallet.ledger_balance
                       )}
                     </span>
                   </div>
@@ -202,7 +202,7 @@ export default function Wallet() {
               <Grid item className="actions-grid-item">
                 <CopyToClipboard
                   text={
-                    userContext.wallet?.virtual_account.virtual_account_no ??
+                    riderContext.wallet?.virtual_account.virtual_account_no ??
                     " "
                   }
                   onCopy={() => {
@@ -223,16 +223,19 @@ export default function Wallet() {
                       &nbsp; &nbsp;
                       <span className="name">
                         {
-                          userContext.wallet?.virtual_account
+                          riderContext.wallet?.virtual_account
                             .virtual_account_bank_name
                         }
                       </span>
                     </div>
                     <span className="account">
-                      {userContext.wallet?.virtual_account.virtual_account_name}
+                      {
+                        riderContext.wallet?.virtual_account
+                          .virtual_account_name
+                      }
                     </span>
                     <span className="number text-blue-default">
-                      {userContext.wallet?.virtual_account.virtual_account_no}
+                      {riderContext.wallet?.virtual_account.virtual_account_no}
                     </span>
                   </div>
                 </CopyToClipboard>
@@ -337,7 +340,7 @@ export default function Wallet() {
                           }}
                         >
                           <MenuItem value="">None</MenuItem>
-                          {userContext.banks.map((bank) => {
+                          {riderContext.banks.map((bank) => {
                             return (
                               <MenuItem value={bank.bank_code}>
                                 {bank.bank_name}
