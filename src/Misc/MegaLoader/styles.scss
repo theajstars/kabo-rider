@@ -1,0 +1,11 @@
+.megaloader-container {
+  height: 80vh;
+  width: 100vw;
+  position: fixed;
+  top: 10vh;
+  background-color: transparent;
+  left: 0;
+  z-index: 99999;
+  overflow: clip;
+  box-sizing: border-box;
+}

@@ -1,0 +1,211 @@
+@import "../../Variables.scss";
+
+.wallet-container {
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  .top {
+    box-sizing: border-box;
+    padding: 30px 0;
+    padding-bottom: 0px;
+  }
+  .overview {
+    margin-top: 40px;
+    border: 1px solid rgba(163, 163, 163, 0.572);
+    padding: 20px;
+    box-sizing: border-box;
+    border-radius: 20px;
+
+    .items {
+      padding: 20px 0;
+      .item {
+        max-width: 400px;
+
+        .left {
+          .icon {
+            height: 45px;
+            width: 45px;
+            background-color: rgba(225, 225, 225, 0.572);
+            border-radius: 50%;
+          }
+        }
+      }
+    }
+  }
+  .actions {
+    margin: 30px 0;
+    .bank {
+      box-sizing: border-box;
+      height: 230px;
+      width: 330px;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
+      cursor: pointer;
+      transition-duration: 0.12s;
+      &:hover {
+        opacity: 0.7;
+      }
+      .label {
+        background-color: $BlueDefault;
+        padding: 2px 10px;
+        font-size: 15px;
+        border-radius: 3px;
+        width: fit-content;
+        color: $White;
+      }
+      .icon {
+        background-color: rgba(104, 181, 253, 0.222);
+        border-radius: 50%;
+        color: $BlueDefault;
+        height: 50px;
+        width: 50px;
+      }
+      .name {
+        font-weight: 500;
+      }
+      .number {
+        font-size: 22px;
+        letter-spacing: 4px;
+        font-weight: 600;
+      }
+    }
+    .transfer {
+      box-sizing: border-box;
+      height: 230px;
+      width: 330px;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
+      cursor: pointer;
+      transition-duration: 0.12s;
+      background: url("../../Assets/IMG/BlueBackground.jpg");
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+      .input::placeholder {
+        font-size: 14px;
+        font-weight: 400;
+      }
+      .input[type="text"] {
+        text-transform: uppercase;
+      }
+      .input[type="text"]::placeholder {
+        text-transform: capitalize;
+      }
+      .input {
+        width: 100%;
+        outline: none;
+        height: 35px;
+        border-radius: 5px;
+        border: none;
+        font-size: 16px;
+        font-weight: 500;
+        padding: 0 10px;
+        box-sizing: border-box;
+      }
+      .input::-webkit-outer-spin-button,
+      .input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+      .pay {
+        height: 35px;
+        font-size: 14px;
+        border: none;
+        outline: none;
+        color: $White;
+        border-radius: 5px;
+        background-color: $PurpleDefault;
+        cursor: pointer;
+        transition-duration: 0.12s;
+
+        &:disabled {
+          background-color: rgb(184, 184, 184);
+          color: $WhitePrimary;
+          cursor: not-allowed;
+        }
+        &:not(:disabled):hover {
+          background-color: $BlueDefault;
+        }
+      }
+    }
+    .user-bank {
+      box-sizing: border-box;
+      height: 230px;
+      width: 330px;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
+      transition-duration: 0.12s;
+
+      .label {
+        background-color: $BlueDefault;
+        padding: 2px 10px;
+        font-size: 15px;
+        border-radius: 3px;
+        width: fit-content;
+        color: $White;
+      }
+
+      .number {
+        outline: none;
+        border: 1px solid $BlueDefault;
+        box-sizing: border-box;
+        height: 40px;
+        padding: 0 20px;
+        border-radius: 5px;
+      }
+      .number::-webkit-outer-spin-button,
+      .number::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+
+      .submit {
+        height: 35px;
+        font-size: 14px;
+        border: none;
+        outline: none;
+        color: $White;
+        border-radius: 5px;
+        background-color: $PurpleDefault;
+        cursor: pointer;
+        transition-duration: 0.12s;
+        &:disabled {
+          background-color: rgb(184, 184, 184);
+          color: $WhitePrimary;
+          cursor: not-allowed;
+        }
+        &:not(:disabled):hover {
+          background-color: $BlueDefault;
+        }
+      }
+    }
+  }
+  @media screen and (max-width: 800px) {
+    & {
+      .overview {
+        .items {
+          flex-direction: column;
+          .item {
+            width: 100%;
+            max-width: unset;
+          }
+        }
+      }
+    }
+  }
+  @media screen and (max-width: 748px) {
+    & {
+      .actions {
+        .actions-grid-item,
+        .transfer,
+        .bank,
+        .user-bank {
+          width: 100% !important;
+        }
+      }
+    }
+  }
+}
