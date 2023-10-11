@@ -36,16 +36,10 @@ import {
   LoginResponse,
 } from "../../Lib/Responses";
 import MegaLoader from "../../Misc/MegaLoader";
-import Products from "../Products";
+
 import Dashboard from "../Dashboard";
 import Navbar from "../Navbar";
 
-import Orders from "../Orders";
-import Team from "../Team";
-import Cart from "../Cart";
-import Stores from "../Stores";
-import SingleStore from "../SingleStore";
-import SavedItems from "../SavedItems";
 import Profile from "../Profile";
 import Wallet from "../Wallet";
 
@@ -268,13 +262,9 @@ export default function DashboardContainer() {
       <Navbar />
       <Routes>
         <Route index path="/" element={<Dashboard />} />
-        <Route path="/products" element={<Products />} />
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/saved" element={<SavedItems />} />
-        <Route path="/stores" element={<Stores />} />
+
         <Route path="/profile" element={<Profile />} />
         <Route path="/wallet" element={<Wallet />} />
-        <Route path="/store/:storeID" element={<SingleStore />} />
       </Routes>
     </AppContext.Provider>
   );

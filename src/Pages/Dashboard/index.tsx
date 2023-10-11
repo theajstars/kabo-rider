@@ -11,7 +11,6 @@ import Logo from "../../Assets/IMG/Logo.png";
 import "./styles.scss";
 import MegaLoader from "../../Misc/MegaLoader";
 import { AppContext } from "../DashboardContainer";
-import ProductCard from "../ProductCard";
 import { PerformRequest } from "../../Lib/PerformRequest";
 import { Endpoints } from "../../Lib/Endpoints";
 import { GetProductsResponse } from "../../Lib/Responses";
@@ -173,17 +172,7 @@ export default function Dashboard() {
                 spacing={4}
                 alignItems="center"
                 justifyContent="center"
-              >
-                {(products.length > 0 ? products : userContext.products).map(
-                  (product, index) => {
-                    return (
-                      <Grid item>
-                        <ProductCard product={product} disabled={isLoading} />
-                      </Grid>
-                    );
-                  }
-                )}
-              </Grid>
+              ></Grid>
               <br />
               <br />
               <Pagination
