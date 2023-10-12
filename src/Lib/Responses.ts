@@ -21,6 +21,28 @@ export interface DefaultResponse {
     message: string;
   };
 }
+export interface PaginatedResponse<DataType> {
+  data: {
+    token: string;
+    status: ResponseStatus;
+    response_code: number;
+    message: string;
+    data: DataType;
+    counts: number;
+    totalPages: number;
+    currentPage: number;
+    listPerPage: string;
+  };
+}
+export interface NonPaginatedResponse<DataType> {
+  data: {
+    token: string;
+    status: ResponseStatus;
+    response_code: number;
+    message: string;
+    data: DataType;
+  };
+}
 export interface LoginResponse {
   data: {
     token: string;

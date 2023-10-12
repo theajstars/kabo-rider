@@ -11,7 +11,13 @@ import {
 import { useToasts } from "react-toast-notifications";
 import Cookies from "js-cookie";
 
-import { Bank, Store, Rider, Wallet as WalletType } from "../../Lib/Types";
+import {
+  Bank,
+  Store,
+  Rider,
+  Wallet as WalletType,
+  RiderStats,
+} from "../../Lib/Types";
 
 import "./styles.scss";
 import { PerformRequest } from "../../Lib/PerformRequest";
