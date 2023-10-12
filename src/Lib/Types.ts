@@ -16,12 +16,27 @@ export interface Rider {
     admin: "No" | "Yes";
     rider: "No" | "Yes";
   };
-  store_id: {
-    superAdmin: null | string;
-    admin: null | string;
-    rider: null | string;
-  };
   username: string;
+}
+export interface RiderStats {
+  rider_id: string;
+  available: "Yes" | "No";
+  info: null;
+  location: {
+    address: string;
+    longitude: string;
+    latitude: string;
+  };
+  orders: {
+    overall_successful: number;
+    day_successful: number;
+    overall_failed: number;
+    today_failed: number;
+    overall_request: number;
+    today_request: number;
+    overall_pending: number;
+    today_pending: number;
+  };
 }
 
 export interface Category {

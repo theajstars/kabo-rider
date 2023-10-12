@@ -33,7 +33,7 @@ export default function Dashboard() {
       {riderContext?.rider ? (
         <>
           <div className="flex-col width-100 align-center justify-center">
-            <span className="text-center px-22 fw-600 text-dark">Products</span>
+            <span className="text-center px-16 fw-500 text-dark">Orders</span>
             <br />
             <div className="flex-row align-center justify-center "></div>
           </div>

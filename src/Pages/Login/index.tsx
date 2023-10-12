@@ -55,13 +55,6 @@ export default function Login() {
       if (r && r.data.status === "success") {
         console.log(r.data);
         Cookies.set("token", r.data.token);
-        const storeIdObject = r.data?.data?.store_id;
-        if (storeIdObject) {
-          const values = Object.values(storeIdObject);
-          const id =
-            values.filter((v) => v !== null && v !== undefined)[0] ?? "";
-          Cookies.set("user_store_id", id);
-        }
 
         addToast("Log in successful", { appearance: "success" });
         navigate("/dashboard");

@@ -56,8 +56,8 @@ export default function Wallet() {
     });
 
   const getUserBankInformation = (param: "name" | "number") => {
-    if (riderContext?.user) {
-      const { bank_name, account_no } = riderContext.user.bank_details;
+    if (riderContext?.rider) {
+      const { bank_name, account_no } = riderContext.rider.bank_details;
       switch (param) {
         case "name":
           return bank_name && bank_name.length > 0
@@ -138,7 +138,7 @@ export default function Wallet() {
   return (
     <Container maxWidth="lg">
       <div className="wallet-container flex-col width-100">
-        {riderContext?.user ? (
+        {riderContext?.rider ? (
           <>
             <div className="top width-100 flex-col">
               <div className="flex-row width-100 align-center justify-between">

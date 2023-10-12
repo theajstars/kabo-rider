@@ -131,7 +131,6 @@ export default function DashboardContainer() {
 
   const logout = () => {
     Cookies.remove("token");
-    Cookies.remove("user_store_id");
     navigate("/login");
   };
   return (
