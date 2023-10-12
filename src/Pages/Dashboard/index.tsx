@@ -2,19 +2,17 @@ import React, { useState, useEffect, useContext } from "react";
 
 import { useNavigate, Link } from "react-router-dom";
 
-import { Alert, AlertTitle, Button, Grid, Pagination } from "@mui/material";
+import { Alert, AlertTitle, Button, Grid, Container } from "@mui/material";
 import { useToasts } from "react-toast-notifications";
 import Cookies from "js-cookie";
-
-import Logo from "../../Assets/IMG/Logo.png";
 
 import "./styles.scss";
 import MegaLoader from "../../Misc/MegaLoader";
 import { AppContext } from "../DashboardContainer";
-import { PerformRequest } from "../../Lib/PerformRequest";
+import { PerformRequest, usePerformRequest } from "../../Lib/PerformRequest";
 import { Endpoints } from "../../Lib/Endpoints";
-import { GetProductsResponse } from "../../Lib/Responses";
-import { Product } from "../../Lib/Types";
+import { GetProductsResponse, NonPaginatedResponse } from "../../Lib/Responses";
+import { Product, RiderStats } from "../../Lib/Types";
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -22,6 +20,16 @@ export default function Dashboard() {
   const riderContext = useContext(AppContext);
 
   const [isLoading, setLoading] = useState<boolean>(false);
+  const { data: stats, reloadData: getRiderStats } = usePerformRequest<
+    RiderStats,
+    NonPaginatedResponse<RiderStats>
+  >({
+    method: "POST",
+    url: Endpoints.GetRiderStats,
+    body: { token: Cookies.get("token") },
+  });
+  const orderStats = Object.entries(stats?.data.orders ?? []);
+
   return (
     <div
       className="dashboard-container flex-col width-100"
@@ -32,7 +40,28 @@ export default function Dashboard() {
     >
       {riderContext?.rider ? (
         <>
-          <div className="flex-col width-100 align-center justify-center">
+          <div className="flex-col width-100 align-center justify-center dashboard">
+            <Container maxWidth="xl" className="stats-row">
+              <Grid
+                container
+                spacing={5}
+                alignItems="center"
+                justifyContent="center"
+              >
+                {orderStats.map((stat) => {
+                  return (
+                    <Grid item>
+                      <div className="flex-col order">
+                        <span className="fw-500 px-30">{stat[1]}</span>
+                        <span className="px-12 capitalize text-dark-secondary">
+                          {stat[0].replaceAll("_", " ")}
+                        </span>
+                      </div>
+                    </Grid>
+                  );
+                })}
+              </Grid>
+            </Container>
             <span className="text-center px-16 fw-500 text-dark">Orders</span>
             <br />
             <div className="flex-row align-center justify-center "></div>

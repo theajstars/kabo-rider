@@ -22,26 +22,22 @@ export interface DefaultResponse {
   };
 }
 export interface PaginatedResponse<DataType> {
-  data: {
-    token: string;
-    status: ResponseStatus;
-    response_code: number;
-    message: string;
-    data: DataType;
-    counts: number;
-    totalPages: number;
-    currentPage: number;
-    listPerPage: string;
-  };
+  token: string;
+  status: ResponseStatus;
+  response_code: number;
+  message: string;
+  data: DataType;
+  counts: number;
+  totalPages: number;
+  currentPage: number;
+  listPerPage: string;
 }
 export interface NonPaginatedResponse<DataType> {
-  data: {
-    token: string;
-    status: ResponseStatus;
-    response_code: number;
-    message: string;
-    data: DataType;
-  };
+  token: string;
+  status: ResponseStatus;
+  response_code: number;
+  message: string;
+  data: DataType;
 }
 export interface LoginResponse {
   data: {

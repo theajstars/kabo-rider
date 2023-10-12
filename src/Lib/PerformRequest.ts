@@ -50,18 +50,18 @@ interface usePerformRequestOptions {
   url: string;
   body?: any;
 }
-function usePerformRequest<Type>({
+function usePerformRequest<Type, ResponseType>({
   method,
   url,
   body,
 }: usePerformRequestOptions) {
-  const [data, setData] = useState<Type>();
+  const [data, setData] = useState<ResponseType>();
   const [isLoading, setLoading] = useState<boolean>(false);
   const reloadData = async () => {
     const config: AxiosRequestConfig = {
       method,
       data: body,
-      url,
+      url: `${baseURL}${url}`,
     };
     setLoading(true);
     const r = await axios(config);

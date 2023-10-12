@@ -19,6 +19,7 @@ const Endpoints = {
   RecoverAccount: "/account/recover-account",
   GetUserDetails: "/account/details",
   UpdateAccount: "/account/update-profile",
+  GetRiderStats: "/rider/details",
 
   GetProducts: "/store/products",
   SearchStores: "/store/search",
