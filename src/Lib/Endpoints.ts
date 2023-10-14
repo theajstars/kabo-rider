@@ -15,6 +15,7 @@ const Endpoints = {
   UploadFile: "/misc/file-upload",
 
   RegisterUser: "/account/register",
+  RegisterAsRider: "/rider/register",
   LoginUser: "/account/login",
   RecoverAccount: "/account/recover-account",
   GetUserDetails: "/account/details",

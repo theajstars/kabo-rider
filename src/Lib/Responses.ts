@@ -19,6 +19,7 @@ export interface DefaultResponse {
     status: ResponseStatus;
     response_code: number;
     message: string;
+    token?: string;
   };
 }
 export interface PaginatedResponse<DataType> {

@@ -14,7 +14,7 @@ import { Endpoints } from "../../Lib/Endpoints";
 import { GetProductsResponse, NonPaginatedResponse } from "../../Lib/Responses";
 import { Product, RiderStats } from "../../Lib/Types";
 
-export default function Dashboard() {
+export default function Notifications() {
   const navigate = useNavigate();
   const { addToast, removeAllToasts } = useToasts();
   const riderContext = useContext(AppContext);

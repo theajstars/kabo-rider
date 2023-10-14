@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { TextField, CardContent, Button, Divider } from "@mui/material";
-import { useNavigate } from "react-router-dom";
 import { useToasts } from "react-toast-notifications";
+import Cookies from "js-cookie";
 
 import Logo from "../../Assets/IMG/Logo.png";
 
@@ -70,8 +70,16 @@ export default function Register() {
       if (r.data && r.data.status) {
         const { status } = r.data;
         if (status === "success") {
+          const token = r.data.token;
+          const r2: DefaultResponse = await PerformRequest({
+            method: "POST",
+            route: Endpoints.RegisterAsRider,
+            data: { token },
+          });
+          console.log(r2);
           addToast("Account Created!", { appearance: "success" });
-          navigate("/login");
+          navigate("/dashboard");
+          Cookies.set("token", token ?? "");
         } else {
           addToast(r.data.message, { appearance: "error" });
         }
