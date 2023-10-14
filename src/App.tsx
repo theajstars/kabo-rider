@@ -11,6 +11,7 @@ import Profile from "./Pages/Profile";
 import Wallet from "./Pages/Wallet";
 import ResetPassword from "./Pages/ResetPassword";
 import Error404 from "./Pages/Error404";
+import Notifications from "./Pages/Notifications";
 
 function App() {
   return (
@@ -26,6 +27,10 @@ function App() {
 
             <Route path="/dashboard/profile" element={<Profile />} />
             <Route path="/dashboard/wallet" element={<Wallet />} />
+            <Route
+              path="/dashboard/notifications"
+              element={<Notifications />}
+            />
           </Route>
           <Route path="*" element={<Error404 />} />
         </Routes>

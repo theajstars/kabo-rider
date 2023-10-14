@@ -20,19 +20,10 @@ export default function Notifications() {
   const riderContext = useContext(AppContext);
 
   const [isLoading, setLoading] = useState<boolean>(false);
-  const { data: stats, reloadData: getRiderStats } = usePerformRequest<
-    RiderStats,
-    NonPaginatedResponse<RiderStats>
-  >({
-    method: "POST",
-    url: Endpoints.GetRiderStats,
-    body: { token: Cookies.get("token") },
-  });
-  const orderStats = Object.entries(stats?.data.orders ?? []);
 
   return (
     <div
-      className="dashboard-container flex-col width-100"
+      className="notifications-container flex-col width-100"
       style={{
         opacity: isLoading ? 0.5 : 1,
         cursor: isLoading ? "not-allowed" : "",
@@ -40,29 +31,7 @@ export default function Notifications() {
     >
       {riderContext?.rider ? (
         <>
-          <div className="flex-col width-100 align-center justify-center dashboard">
-            <Container maxWidth="xl" className="stats-row">
-              <Grid
-                container
-                spacing={5}
-                alignItems="center"
-                justifyContent="center"
-              >
-                {orderStats.map((stat) => {
-                  return (
-                    <Grid item>
-                      <div className="flex-col order">
-                        <span className="fw-500 px-35">{stat[1]}</span>
-                        <span className="px-12 capitalize text-dark-secondary">
-                          {stat[0].replaceAll("_", " ")}
-                        </span>
-                      </div>
-                    </Grid>
-                  );
-                })}
-              </Grid>
-            </Container>
-          </div>
+          <div className="flex-col width-100 align-center justify-center notifications"></div>
           <br />
 
           <br />

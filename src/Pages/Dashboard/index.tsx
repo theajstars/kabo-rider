@@ -28,7 +28,8 @@ export default function Dashboard() {
     url: Endpoints.GetRiderStats,
     body: { token: Cookies.get("token") },
   });
-  const orderStats = Object.entries(stats?.data.orders ?? []);
+  const orders = stats?.data ? stats.data.orders ?? [] : [];
+  const orderStats = Object.entries(orders);
 
   return (
     <div
