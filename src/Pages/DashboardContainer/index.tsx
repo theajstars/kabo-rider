@@ -36,6 +36,7 @@ import Navbar from "../Navbar";
 import Profile from "../Profile";
 import Wallet from "../Wallet";
 import Notifications from "../Notifications";
+import Verification from "../Verification";
 
 interface FetchProductProps {
   page: number;
@@ -162,6 +163,7 @@ export default function DashboardContainer() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/wallet" element={<Wallet />} />
         <Route path="/notifications" element={<Notifications />} />
+        <Route path="/verification" element={<Verification />} />
       </Routes>
     </AppContext.Provider>
   );
