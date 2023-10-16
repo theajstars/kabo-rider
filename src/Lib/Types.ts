@@ -261,3 +261,10 @@ export interface PaystackConfigProps {
   onSuccess: any;
   onClose: any;
 }
+
+export interface Kyc {
+  account: "customer" | "rider";
+  type: "BVN" | "Phone Number Confirmation";
+  kyc_id: string;
+  code: "bvn" | "phone_number";
+}

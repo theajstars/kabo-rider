@@ -12,7 +12,7 @@ import { AppContext } from "../DashboardContainer";
 import { PerformRequest, usePerformRequest } from "../../Lib/PerformRequest";
 import { Endpoints } from "../../Lib/Endpoints";
 import { GetProductsResponse, NonPaginatedResponse } from "../../Lib/Responses";
-import { Product, RiderStats } from "../../Lib/Types";
+import { Kyc, Product, RiderStats } from "../../Lib/Types";
 
 export default function Verification() {
   const navigate = useNavigate();
@@ -21,17 +21,24 @@ export default function Verification() {
 
   const [isLoading, setLoading] = useState<boolean>(false);
 
+  const { data: customerKycData, isLoading: isLoadingCustomerKyc } =
+    usePerformRequest<Kyc, NonPaginatedResponse<Kyc[]>>({
+      method: "POST",
+      url: Endpoints.TrackVerification,
+      body: { token: Cookies.get("token"), account: "customer" },
+    });
+
   return (
-    <div
-      className="verification-container flex-col width-100"
-      style={{
-        opacity: isLoading ? 0.5 : 1,
-        cursor: isLoading ? "not-allowed" : "",
-      }}
-    >
+    <>
       {riderContext?.rider ? (
         <>
-          <div className="flex-col width-100 align-center justify-center verification"></div>
+          <Container maxWidth="lg">
+            <Alert severity="warning">
+              <AlertTitle>Incomplete Profile</AlertTitle>
+              You must complete your KYC details first.
+            </Alert>
+          </Container>
+
           <br />
 
           <br />
@@ -39,6 +46,6 @@ export default function Verification() {
       ) : (
         <MegaLoader />
       )}
-    </div>
+    </>
   );
 }

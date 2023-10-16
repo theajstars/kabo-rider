@@ -18,6 +18,15 @@ export default function Notifications() {
   const navigate = useNavigate();
   const { addToast, removeAllToasts } = useToasts();
   const riderContext = useContext(AppContext);
+  useEffect(() => {
+    if (
+      riderContext &&
+      riderContext.customerKyc &&
+      riderContext.customerKyc.length !== 0
+    ) {
+      navigate("/dashboard/verification");
+    }
+  }, [riderContext]);
 
   const [isLoading, setLoading] = useState<boolean>(false);
 

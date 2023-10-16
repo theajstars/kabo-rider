@@ -2,7 +2,6 @@ import React, { useState, useEffect, createContext } from "react";
 
 import {
   useNavigate,
-  Link,
   BrowserRouter as Router,
   Routes,
   Route,
@@ -17,16 +16,18 @@ import {
   Rider,
   Wallet as WalletType,
   RiderStats,
+  Kyc,
 } from "../../Lib/Types";
 
 import "./styles.scss";
-import { PerformRequest } from "../../Lib/PerformRequest";
+import { PerformRequest, usePerformRequest } from "../../Lib/PerformRequest";
 import { Endpoints } from "../../Lib/Endpoints";
 import {
   GetBanksResponse,
   GetStoreListResponse,
   GetWalletResponse,
   LoginResponse,
+  NonPaginatedResponse,
 } from "../../Lib/Responses";
 import MegaLoader from "../../Misc/MegaLoader";
 
@@ -56,6 +57,7 @@ interface AppContextProps {
   stores: Store[] | [];
   getStores?: ({ page, limit }: FetchProductProps) => void;
   storeCount: number;
+  customerKyc: Kyc[];
 
   wallet: WalletType | null;
 }
@@ -128,6 +130,12 @@ export default function DashboardContainer() {
       setStoreCount(r.data.counts);
     }
   };
+  const { data: customerKycData, isLoading: isLoadingCustomerKyc } =
+    usePerformRequest<Kyc, NonPaginatedResponse<Kyc[]>>({
+      method: "POST",
+      url: Endpoints.TrackVerification,
+      body: { token: Cookies.get("token"), account: "customer" },
+    });
 
   useEffect(() => {
     getRider();
@@ -141,12 +149,14 @@ export default function DashboardContainer() {
     Cookies.remove("token");
     navigate("/login");
   };
+
   return (
     <AppContext.Provider
       value={{
         rider: rider,
         getRider: getRider,
         logout: logout,
+        customerKyc: customerKycData?.data ?? [],
 
         stores: stores,
         getStores: getStores,

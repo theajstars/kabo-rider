@@ -55,6 +55,15 @@ export default function Wallet() {
       walletID: "",
     });
 
+  useEffect(() => {
+    if (
+      riderContext &&
+      riderContext.customerKyc &&
+      riderContext.customerKyc.length !== 0
+    ) {
+      navigate("/dashboard/verification");
+    }
+  }, [riderContext]);
   const getUserBankInformation = (param: "name" | "number") => {
     if (riderContext?.rider) {
       const { bank_name, account_no } = riderContext.rider.bank_details;

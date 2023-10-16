@@ -41,5 +41,7 @@ const Endpoints = {
 
   GetBanks: "/wallet/banks",
   UpdateBankAccount: "/account/update-bank-details",
+
+  TrackVerification: "/verification/track",
 };
 export { Endpoints };

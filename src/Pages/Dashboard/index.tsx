@@ -31,6 +31,15 @@ export default function Dashboard() {
   const orders = stats?.data ? stats.data.orders ?? [] : [];
   const orderStats = Object.entries(orders);
 
+  useEffect(() => {
+    if (
+      riderContext &&
+      riderContext.customerKyc &&
+      riderContext.customerKyc.length !== 0
+    ) {
+      navigate("/dashboard/verification");
+    }
+  }, [riderContext]);
   return (
     <div
       className="dashboard-container flex-col width-100"

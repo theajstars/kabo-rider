@@ -116,6 +116,15 @@ export default function Profile() {
     }
   };
   useEffect(() => {
+    if (
+      riderContext &&
+      riderContext.customerKyc &&
+      riderContext.customerKyc.length !== 0
+    ) {
+      navigate("/dashboard/verification");
+    }
+  }, [riderContext]);
+  useEffect(() => {
     console.log(userImage);
   }, [userImage]);
   useEffect(() => {
