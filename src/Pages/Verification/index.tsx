@@ -73,7 +73,21 @@ export default function Verification() {
       setOTPLoading(false);
     }
   };
-  const SubmitBvnForm = async () => {};
+  const SubmitBvnForm = async () => {
+    removeAllToasts();
+    const { phone, otp, bvn } = bvnVerificationForm;
+    const isPhoneValid = validatePhoneNumber(phone);
+
+    if (bvn.length !== 11 || !isPhoneValid || otp.length < 4) {
+      addToast("Please complete the form!", { appearance: "warning" });
+    } else {
+      const r: DefaultResponse = await PerformRequest({
+        route: Endpoints.DoVerification,
+        method: "POST",
+        data: { phone_number: phone, otp, bvn },
+      });
+    }
+  };
 
   return (
     <>

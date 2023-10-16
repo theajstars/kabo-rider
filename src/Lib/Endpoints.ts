@@ -43,6 +43,7 @@ const Endpoints = {
   UpdateBankAccount: "/account/update-bank-details",
 
   TrackVerification: "/verification/track",
+  DoVerification: "/verification/check",
   RequestOTP: "/account/request-otp",
   ValidateOTP: "/account/validate-otp",
 };
