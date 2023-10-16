@@ -21,18 +21,14 @@ export default function Verification() {
 
   const [isLoading, setLoading] = useState<boolean>(false);
 
-  const { data: customerKycData, isLoading: isLoadingCustomerKyc } =
-    usePerformRequest<Kyc, NonPaginatedResponse<Kyc[]>>({
-      method: "POST",
-      url: Endpoints.TrackVerification,
-      body: { token: Cookies.get("token"), account: "customer" },
-    });
+  console.log(riderContext?.customerKyc);
 
   return (
     <>
       {riderContext?.rider ? (
         <>
           <Container maxWidth="lg">
+            <br />
             <Alert severity="warning">
               <AlertTitle>Incomplete Profile</AlertTitle>
               You must complete your KYC details first.
