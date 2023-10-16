@@ -1,5 +1,5 @@
 const appConfig = {
-  appName: "Kabo App",
+  appName: "Kabo Rider",
 };
 
 const OrderStatuses = [
