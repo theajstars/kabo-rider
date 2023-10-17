@@ -56,12 +56,23 @@ const getHalfDate = (dateString: string | undefined) => {
       "Nov",
       "Dec",
     ];
-    const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-
     const year = d.getFullYear();
     const month = MONTHS[d.getMonth()];
 
     return `${month}-${d.getDate()}-${year} `;
+  }
+  return dateString;
+};
+const getDateNum = (dateString: string | undefined) => {
+  if (dateString) {
+    const d = new Date(dateString);
+
+    const year = d.getFullYear();
+    const month =
+      d.getMonth() + 1 < 10 ? `0${d.getMonth() + 1}` : d.getMonth() + 1;
+    const date = d.getDate() < 10 ? `0${d.getDate()}` : d.getDate();
+
+    return `${date}-${month}-${year}`;
   }
   return dateString;
 };
@@ -71,8 +82,6 @@ function validatePhoneNumber(input_str: string) {
   if (str.substring(0, 3) === "234") {
     str = str.replace("234", "");
   }
-  // var re = /^\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$/;
-
   return re.test(str);
 }
 export {
@@ -80,5 +89,6 @@ export {
   getFinancialValueFromNumeric,
   getFullDate,
   getHalfDate,
+  getDateNum,
   validatePhoneNumber,
 };
