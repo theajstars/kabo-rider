@@ -13,6 +13,8 @@ import {
 } from "@mui/material";
 import { useToasts } from "react-toast-notifications";
 import Cookies from "js-cookie";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 import "./styles.scss";
 import MegaLoader from "../../Misc/MegaLoader";
@@ -25,12 +27,17 @@ import {
   NonPaginatedResponse,
 } from "../../Lib/Responses";
 import { Kyc, Product, RiderStats } from "../../Lib/Types";
-import { validatePhoneNumber } from "../../Lib/Methods";
+import {
+  getFullDate,
+  getHalfDate,
+  validatePhoneNumber,
+} from "../../Lib/Methods";
 
 interface BvnFormProps {
   bvn: string;
   phone: string;
   otp: string;
+  dob: Date;
 }
 export default function Verification() {
   const navigate = useNavigate();
@@ -50,6 +57,7 @@ export default function Verification() {
     bvn: "",
     phone: "",
     otp: "",
+    dob: new Date(),
   });
 
   const RequestOTP = async () => {
@@ -75,7 +83,7 @@ export default function Verification() {
   };
   const SubmitBvnForm = async () => {
     removeAllToasts();
-    const { phone, otp, bvn } = bvnVerificationForm;
+    const { phone, otp, bvn, dob } = bvnVerificationForm;
     const isPhoneValid = validatePhoneNumber(phone);
 
     if (bvn.length !== 11 || !isPhoneValid || otp.length < 4) {
@@ -84,7 +92,13 @@ export default function Verification() {
       const r: DefaultResponse = await PerformRequest({
         route: Endpoints.DoVerification,
         method: "POST",
-        data: { phone_number: phone, otp, bvn },
+        data: {
+          token: Cookies.get("token"),
+          kyc_id: "1",
+          phone_number: phone,
+          bvn,
+          dob,
+        },
       });
     }
   };
@@ -131,7 +145,9 @@ export default function Verification() {
                 />
               </FormControl>
               <br />
-              <FormControl variant="outlined">
+
+              <br />
+              {/* <FormControl variant="outlined">
                 <TextField
                   label="OTP"
                   placeholder="Enter OTP sent to your phone"
@@ -145,19 +161,18 @@ export default function Verification() {
                     });
                   }}
                 />
-              </FormControl>
-              <br />
+              </FormControl> */}
               <div className="flex-row align-center">
-                <Button
+                {/* <Button
                   disabled={isOTPLoading}
                   onClick={RequestOTP}
                   variant="outlined"
                 >
                   Request OTP
                 </Button>
-                &nbsp; &nbsp; &nbsp;
+                &nbsp; &nbsp; &nbsp; */}
                 <Button
-                  disabled={isOTPLoading || !isOTPSent}
+                  // disabled={isOTPLoading || !isOTPSent}
                   onClick={SubmitBvnForm}
                   variant="contained"
                 >
