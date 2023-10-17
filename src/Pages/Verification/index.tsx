@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 
 import { useNavigate, Link } from "react-router-dom";
 
@@ -18,15 +18,22 @@ import dayjs, { Dayjs } from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
-import "./styles.scss";
 import MegaLoader from "../../Misc/MegaLoader";
 import { AppContext } from "../DashboardContainer";
-import { PerformRequest, usePerformRequest } from "../../Lib/PerformRequest";
+import {
+  PerformRequest,
+  UploadFile,
+  usePerformRequest,
+} from "../../Lib/PerformRequest";
 import { Endpoints } from "../../Lib/Endpoints";
-import { DefaultResponse } from "../../Lib/Responses";
+import { DefaultResponse, UploadFileResponse } from "../../Lib/Responses";
 import { Kyc, Product, RiderStats } from "../../Lib/Types";
 import { getDateNum, validatePhoneNumber } from "../../Lib/Methods";
 import ProgressCircle from "../../Misc/ProgressCircle";
+
+import DefaultUserImage from "../../Assets/IMG/DefaultUserImage.png";
+
+import "./styles.scss";
 
 interface BvnFormProps {
   bvn: string;
@@ -40,6 +47,7 @@ interface PhoneFormProps {
 }
 export default function Verification() {
   const navigate = useNavigate();
+  const selfieUploadRef = useRef<HTMLInputElement>(null);
   const { addToast, removeAllToasts } = useToasts();
   const riderContext = useContext(AppContext);
 
@@ -50,11 +58,23 @@ export default function Verification() {
   const [isOTPSent, setOTPSent] = useState<boolean>(false);
   const [isOTPLoading, setOTPLoading] = useState<boolean>(false);
 
-  const kyc = riderContext?.customerKyc
-    ? riderContext.customerKyc.map((k) =>
-        k.status !== "Successful" ? k.code : null
-      )
-    : [];
+  const [selfieImage, setSelfieImage] = useState<File | null>(null);
+  const [isImageUploading, setImageUploading] = useState<boolean>(false);
+
+  const kyc = [
+    ...(riderContext?.customerKyc
+      ? riderContext.customerKyc.map((k) =>
+          k.status !== "Successful" ? k.code : null
+        )
+      : []),
+    ...(riderContext?.riderKyc
+      ? riderContext.riderKyc.map((k) =>
+          k.status !== "Successful" ? k.code : null
+        )
+      : []),
+  ];
+
+  console.log(kyc);
 
   const [bvnVerificationForm, setBvnVerificationForm] = useState<BvnFormProps>({
     bvn: "",
@@ -124,6 +144,45 @@ export default function Verification() {
     }
   };
 
+  const getCurrentImage = () => {
+    if (selfieImage) {
+      return URL.createObjectURL(selfieImage);
+    } else {
+      return DefaultUserImage;
+    }
+  };
+
+  const UploadImage = async () => {
+    if (selfieImage) {
+      setImageUploading(true);
+      const r: UploadFileResponse = await UploadFile(selfieImage).catch(() => {
+        setImageUploading(false);
+      });
+      if (r && r.data && r.data.status === "success") {
+        // Send request to Verification Endpoint
+        const r2: DefaultResponse = await PerformRequest({
+          method: "POST",
+          route: Endpoints.DoVerification,
+          data: {
+            token: Cookies.get("token"),
+            kyc_id: "5",
+            photo_url: r.data.file_url,
+          },
+        }).catch(() => {
+          setImageUploading(false);
+        });
+        if (r2 && r2.data && r2.data.status === "success") {
+          addToast("Image Uploaded successfully!", { appearance: "success" });
+        } else {
+          addToast(r.data.message, { appearance: "error" });
+        }
+      } else {
+        setImageUploading(false);
+      }
+    } else {
+      addToast("You must select an image!", { appearance: "error" });
+    }
+  };
   return (
     <>
       {riderContext?.rider ? (
@@ -252,6 +311,46 @@ export default function Verification() {
                   variant="contained"
                 >
                   Verify Phone
+                </Button>
+              </div>
+            </div>
+          )}
+          {kyc.includes("face_comparison") && (
+            <div className="verify-form flex-col width-100">
+              <input
+                type="file"
+                ref={selfieUploadRef}
+                accept=".png, .jpeg, .jpg"
+                className="display-none"
+                onChange={(e) => {
+                  const files = e.target.files ?? [];
+                  if (files[0]) {
+                    setSelfieImage(files[0]);
+                  }
+                }}
+              />
+              <div className="flex-row align-center">
+                <img src={getCurrentImage()} alt="" className="selfie-image" />
+                &nbsp; &nbsp;
+                <Button
+                  color="primary"
+                  variant="contained"
+                  className="btn"
+                  onClick={() => {
+                    selfieUploadRef.current?.click();
+                  }}
+                >
+                  {selfieImage ? "Replace Image" : "Choose Image"}
+                </Button>
+                &nbsp; &nbsp;
+                <Button
+                  color="primary"
+                  variant="contained"
+                  className="btn"
+                  disabled={!selfieImage || isImageUploading}
+                  onClick={UploadImage}
+                >
+                  {isImageUploading ? <ProgressCircle /> : "Upload Image"}
                 </Button>
               </div>
             </div>
