@@ -58,6 +58,7 @@ interface AppContextProps {
   getStores?: ({ page, limit }: FetchProductProps) => void;
   storeCount: number;
   customerKyc: Kyc[];
+  riderKyc: Kyc[];
 
   wallet: WalletType | null;
 }
@@ -136,6 +137,14 @@ export default function DashboardContainer() {
       url: Endpoints.TrackVerification,
       body: { token: Cookies.get("token"), account: "customer" },
     });
+  const { data: riderKycData } = usePerformRequest<
+    Kyc,
+    NonPaginatedResponse<Kyc[]>
+  >({
+    method: "POST",
+    url: Endpoints.TrackVerification,
+    body: { token: Cookies.get("token"), account: "rider" },
+  });
 
   useEffect(() => {
     getRider();
@@ -164,6 +173,7 @@ export default function DashboardContainer() {
         storeCount: storeCount,
 
         banks: banks,
+        riderKyc: riderKycData?.data ?? [],
       }}
     >
       <Navbar />

@@ -51,7 +51,9 @@ export default function Verification() {
   const [isOTPLoading, setOTPLoading] = useState<boolean>(false);
 
   const kyc = riderContext?.customerKyc
-    ? riderContext.customerKyc.map((k) => k.code)
+    ? riderContext.customerKyc.map((k) =>
+        k.status !== "Successful" ? k.code : null
+      )
     : [];
 
   const [bvnVerificationForm, setBvnVerificationForm] = useState<BvnFormProps>({
@@ -75,7 +77,7 @@ export default function Verification() {
     } else {
       setOTPLoading(true);
       const r: DefaultResponse = await PerformRequest({
-        route: Endpoints.RequestOTP,
+        route: Endpoints.DoVerification,
         method: "POST",
         data: { phone },
       }).catch(() => {

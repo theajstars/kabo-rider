@@ -264,7 +264,8 @@ export interface PaystackConfigProps {
 
 export interface Kyc {
   account: "customer" | "rider";
-  type: "BVN" | "Phone Number Confirmation";
+  type: "BVN" | "Phone Number Confirmation" | "Facial Biometrics Verification";
   kyc_id: string;
-  code: "bvn" | "phone_number";
+  code: "bvn" | "phone_number" | "face_comparison";
+  status: "Successful" | "Pending" | "Failed";
 }
