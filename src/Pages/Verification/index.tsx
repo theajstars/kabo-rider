@@ -26,6 +26,7 @@ import { Endpoints } from "../../Lib/Endpoints";
 import { DefaultResponse } from "../../Lib/Responses";
 import { Kyc, Product, RiderStats } from "../../Lib/Types";
 import { getDateNum, validatePhoneNumber } from "../../Lib/Methods";
+import ProgressCircle from "../../Misc/ProgressCircle";
 
 interface BvnFormProps {
   bvn: string;
@@ -43,6 +44,8 @@ export default function Verification() {
   const riderContext = useContext(AppContext);
 
   const [isLoading, setLoading] = useState<boolean>(false);
+
+  const [isBVNLoading, setBVNLoading] = useState<boolean>(false);
 
   const [isOTPSent, setOTPSent] = useState<boolean>(false);
   const [isOTPLoading, setOTPLoading] = useState<boolean>(false);
@@ -78,10 +81,13 @@ export default function Verification() {
       }).catch(() => {
         setOTPLoading(false);
       });
+      setOTPLoading(false);
+      if (r.data.status === "success") {
+        setOTPSent(true);
+      }
       addToast(r.data.message, {
         appearance: r.data.status === "success" ? "success" : "error",
       });
-      setOTPLoading(false);
     }
   };
   const SubmitBvnForm = async () => {
@@ -93,6 +99,7 @@ export default function Verification() {
     if (bvn.length !== 11 || !isPhoneValid) {
       addToast("Please complete the form!", { appearance: "warning" });
     } else {
+      setBVNLoading(true);
       const r: DefaultResponse = await PerformRequest({
         route: Endpoints.DoVerification,
         method: "POST",
@@ -103,7 +110,15 @@ export default function Verification() {
           bvn,
           dob: getDateNum(dob?.toDate().toDateString()),
         },
+      }).catch(() => {
+        setBVNLoading(false);
       });
+      setBVNLoading(false);
+      if (r && r.data && r.data.status === "success") {
+        addToast("BVN Uploaded Successfully!", { appearance: "success" });
+      } else {
+        addToast(r.data.message ?? "", { appearance: "error" });
+      }
     }
   };
 
@@ -168,36 +183,15 @@ export default function Verification() {
                 </DemoContainer>
               </LocalizationProvider>
               <br />
-              {/* <FormControl variant="outlined">
-                <TextField
-                  label="OTP"
-                  placeholder="Enter OTP sent to your phone"
-                  disabled={isOTPSent}
-                  name="otp"
-                  value={bvnVerificationForm.otp}
-                  onChange={(e) => {
-                    setBvnVerificationForm({
-                      ...bvnVerificationForm,
-                      otp: e.target.value,
-                    });
-                  }}
-                />
-              </FormControl> */}
+
               <div className="flex-row align-center">
-                {/* <Button
-                  disabled={isOTPLoading}
-                  onClick={RequestOTP}
-                  variant="outlined"
-                >
-                  Request OTP
-                </Button>
-                &nbsp; &nbsp; &nbsp; */}
                 <Button
-                  // disabled={isOTPLoading || !isOTPSent}
+                  className="btn"
+                  disabled={isBVNLoading}
                   onClick={SubmitBvnForm}
                   variant="contained"
                 >
-                  Verify BVN
+                  {isBVNLoading ? <ProgressCircle /> : "Verify BVN"}
                 </Button>
               </div>
             </div>
@@ -227,7 +221,7 @@ export default function Verification() {
                 <TextField
                   label="OTP"
                   placeholder="Enter OTP sent to your phone"
-                  disabled={isOTPSent}
+                  disabled={!isOTPSent}
                   name="otp"
                   value={bvnVerificationForm.otp}
                   onChange={(e) => {
@@ -241,14 +235,16 @@ export default function Verification() {
               <br />
               <div className="flex-row align-center">
                 <Button
+                  className="btn"
                   disabled={isOTPLoading}
                   onClick={RequestOTP}
                   variant="outlined"
                 >
-                  Request OTP
+                  {isOTPLoading ? <ProgressCircle /> : "Request OTP"}
                 </Button>
                 &nbsp; &nbsp; &nbsp;
                 <Button
+                  className="btn"
                   disabled={isOTPLoading || !isOTPSent}
                   onClick={SubmitBvnForm}
                   variant="contained"
