@@ -57,6 +57,7 @@ export default function Verification() {
 
   const [isOTPSent, setOTPSent] = useState<boolean>(false);
   const [isOTPLoading, setOTPLoading] = useState<boolean>(false);
+  const [isPhoneLoading, setPhoneLoading] = useState<boolean>(false);
 
   const [selfieImage, setSelfieImage] = useState<File | null>(null);
   const [isImageUploading, setImageUploading] = useState<boolean>(false);
@@ -99,7 +100,12 @@ export default function Verification() {
       const r: DefaultResponse = await PerformRequest({
         route: Endpoints.DoVerification,
         method: "POST",
-        data: { phone },
+        data: {
+          phone,
+          token: Cookies.get("token"),
+          kyc_id: "6",
+          send_otp: "Yes",
+        },
       }).catch(() => {
         setOTPLoading(false);
       });
@@ -140,6 +146,37 @@ export default function Verification() {
         addToast("BVN Uploaded Successfully!", { appearance: "success" });
       } else {
         addToast(r.data.message ?? "", { appearance: "error" });
+      }
+    }
+  };
+  const SubmitPhoneForm = async () => {
+    removeAllToasts();
+    const { phone, otp } = phoneVerificationForm;
+    const isPhoneValid = validatePhoneNumber(phone);
+
+    if (!isPhoneValid || otp.length === 0) {
+      addToast("Please complete the form!", { appearance: "warning" });
+    } else {
+      setPhoneLoading(true);
+      const r: DefaultResponse = await PerformRequest({
+        route: Endpoints.DoVerification,
+        method: "POST",
+        data: {
+          token: Cookies.get("token"),
+          kyc_id: "6",
+          otp,
+          send_otp: "No",
+        },
+      }).catch(() => {
+        setPhoneLoading(false);
+      });
+      setPhoneLoading(false);
+      if (r) {
+        if (r.data && r.data.status === "success") {
+          addToast("Phone verified Successfully!", { appearance: "success" });
+        } else {
+          addToast(r.data.message ?? "", { appearance: "error" });
+        }
       }
     }
   };
@@ -284,10 +321,10 @@ export default function Verification() {
                   placeholder="Enter OTP sent to your phone"
                   disabled={!isOTPSent}
                   name="otp"
-                  value={bvnVerificationForm.otp}
+                  value={phoneVerificationForm.otp}
                   onChange={(e) => {
-                    setBvnVerificationForm({
-                      ...bvnVerificationForm,
+                    setPhoneVerificationForm({
+                      ...phoneVerificationForm,
                       otp: e.target.value,
                     });
                   }}
@@ -306,11 +343,11 @@ export default function Verification() {
                 &nbsp; &nbsp; &nbsp;
                 <Button
                   className="btn"
-                  disabled={isOTPLoading || !isOTPSent}
-                  onClick={SubmitBvnForm}
+                  disabled={isOTPLoading || !isOTPSent || isPhoneLoading}
+                  onClick={SubmitPhoneForm}
                   variant="contained"
                 >
-                  Verify Phone
+                  {isPhoneLoading ? <ProgressCircle /> : "Verify Phone"}
                 </Button>
               </div>
             </div>
