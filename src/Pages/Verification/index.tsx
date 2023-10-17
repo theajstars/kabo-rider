@@ -13,8 +13,11 @@ import {
 } from "@mui/material";
 import { useToasts } from "react-toast-notifications";
 import Cookies from "js-cookie";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs, { Dayjs } from "dayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 import "./styles.scss";
 import MegaLoader from "../../Misc/MegaLoader";
@@ -37,7 +40,7 @@ interface BvnFormProps {
   bvn: string;
   phone: string;
   otp: string;
-  dob: Date;
+  dob: Dayjs | null;
 }
 export default function Verification() {
   const navigate = useNavigate();
@@ -57,7 +60,7 @@ export default function Verification() {
     bvn: "",
     phone: "",
     otp: "",
-    dob: new Date(),
+    dob: dayjs("2010-04-10"),
   });
 
   const RequestOTP = async () => {
@@ -85,7 +88,7 @@ export default function Verification() {
     removeAllToasts();
     const { phone, otp, bvn, dob } = bvnVerificationForm;
     const isPhoneValid = validatePhoneNumber(phone);
-
+    console.log(dob?.toDate());
     if (bvn.length !== 11 || !isPhoneValid || otp.length < 4) {
       addToast("Please complete the form!", { appearance: "warning" });
     } else {
@@ -97,7 +100,7 @@ export default function Verification() {
           kyc_id: "1",
           phone_number: phone,
           bvn,
-          dob,
+          dob: dob?.toDate(),
         },
       });
     }
@@ -145,7 +148,20 @@ export default function Verification() {
                 />
               </FormControl>
               <br />
-
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DemoContainer components={["DatePicker"]}>
+                  <DatePicker
+                    label="Date of Birth"
+                    value={bvnVerificationForm.dob}
+                    onChange={(date) =>
+                      setBvnVerificationForm({
+                        ...bvnVerificationForm,
+                        dob: date,
+                      })
+                    }
+                  />
+                </DemoContainer>
+              </LocalizationProvider>
               <br />
               {/* <FormControl variant="outlined">
                 <TextField
