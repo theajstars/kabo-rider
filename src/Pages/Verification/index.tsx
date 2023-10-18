@@ -208,10 +208,11 @@ export default function Verification() {
         }).catch(() => {
           setImageUploading(false);
         });
+        setImageUploading(false);
         if (r2 && r2.data && r2.data.status === "success") {
           addToast("Image Uploaded successfully!", { appearance: "success" });
         } else {
-          addToast(r.data.message, { appearance: "error" });
+          addToast(r2.data.message, { appearance: "error" });
         }
       } else {
         setImageUploading(false);

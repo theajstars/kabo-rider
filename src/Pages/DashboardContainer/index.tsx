@@ -146,6 +146,7 @@ export default function DashboardContainer() {
     body: { token: Cookies.get("token"), account: "rider" },
   });
 
+  console.log(riderKycData?.data, customerKycData?.data);
   useEffect(() => {
     getRider();
 

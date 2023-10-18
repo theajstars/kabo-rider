@@ -56,11 +56,16 @@ export default function Wallet() {
     });
 
   useEffect(() => {
-    if (
-      riderContext &&
-      riderContext.customerKyc &&
-      riderContext.customerKyc.length !== 0
-    ) {
+    const kyc = [
+      ...(riderContext?.customerKyc
+        ? riderContext.customerKyc.filter((k) => k.status !== "Successful")
+        : []),
+      ...(riderContext?.riderKyc
+        ? riderContext.riderKyc.filter((k) => k.status !== "Successful")
+        : []),
+    ];
+    console.log("Da KYC", kyc);
+    if (kyc.length !== 0) {
       navigate("/dashboard/verification");
     }
   }, [riderContext]);
