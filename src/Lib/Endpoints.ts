@@ -22,6 +22,8 @@ const Endpoints = {
   UpdateAccount: "/account/update-profile",
   GetRiderStats: "/rider/details",
 
+  GetNotifications: "/rider/notification",
+
   GetProducts: "/store/products",
   SearchStores: "/store/search",
   GetProductCategory: "/store/category",

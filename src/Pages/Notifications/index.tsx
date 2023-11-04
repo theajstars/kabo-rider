@@ -35,6 +35,15 @@ export default function Notifications() {
 
   const [isLoading, setLoading] = useState<boolean>(false);
 
+  const { data: riderNotifications } = usePerformRequest<
+    any,
+    NonPaginatedResponse<any>
+  >({
+    method: "POST",
+    url: Endpoints.GetNotifications,
+    body: { token: Cookies.get("token") },
+  });
+  console.log(riderNotifications?.data);
   return (
     <div
       className="notifications-container flex-col width-100"
