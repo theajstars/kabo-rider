@@ -2,7 +2,19 @@ import React, { useState, useEffect, useContext } from "react";
 
 import { useNavigate, Link } from "react-router-dom";
 
-import { Alert, AlertTitle, Button, Grid, Container } from "@mui/material";
+import {
+  Alert,
+  AlertTitle,
+  Button,
+  Grid,
+  Paper,
+  Table,
+  TableContainer,
+  TableHead,
+  TableCell,
+  TableRow,
+  TableBody,
+} from "@mui/material";
 import { useToasts } from "react-toast-notifications";
 import Cookies from "js-cookie";
 
@@ -12,7 +24,12 @@ import { AppContext } from "../DashboardContainer";
 import { PerformRequest, usePerformRequest } from "../../Lib/PerformRequest";
 import { Endpoints } from "../../Lib/Endpoints";
 import { GetProductsResponse, NonPaginatedResponse } from "../../Lib/Responses";
-import { NotificationResponse, Product, RiderStats } from "../../Lib/Types";
+import {
+  Notification as RiderNotification,
+  NotificationResponse,
+  Product,
+  RiderStats,
+} from "../../Lib/Types";
 
 export default function Notifications() {
   const navigate = useNavigate();
@@ -44,6 +61,9 @@ export default function Notifications() {
     body: { token: Cookies.get("token") },
   });
   console.log(riderNotifications?.data.orders);
+
+  const [currentOrder, setCurrentOrder] = useState<RiderNotification | null>();
+  const [isOrderModalVisible, setOrderModalVisible] = useState<boolean>(false);
   return (
     <div
       className="notifications-container flex-col width-100"
@@ -54,9 +74,46 @@ export default function Notifications() {
     >
       {riderContext?.rider ? (
         <>
-          <div className="flex-col width-100 align-center justify-center notifications"></div>
+          <div className="flex-col width-100 align-center justify-center notifications">
+            <span className="px-17 fw-500">Pending Orders</span>
+          </div>
           <br />
-
+          <TableContainer component={Paper}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Reference Code</TableCell>
+                  <TableCell>Address</TableCell>
+                  <TableCell>Details</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {riderNotifications?.data.orders.map((order) => {
+                  return (
+                    <TableRow key={order.reference_code}>
+                      <TableCell>{order.reference_code}</TableCell>
+                      <TableCell>{order.address}</TableCell>
+                      <TableCell>
+                        <Button
+                          sx={{
+                            fontSize: "13px",
+                          }}
+                          onClick={() => {
+                            setCurrentOrder(order);
+                            setOrderModalVisible(true);
+                          }}
+                          variant="contained"
+                          color="primary"
+                        >
+                          View Details
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          </TableContainer>
           <br />
         </>
       ) : (
