@@ -29,8 +29,6 @@ export default function BottomTabs() {
   const navigate = useNavigate();
   const userContext = useContext(AppContext);
 
-  const cartProducts = userContext?.cart;
-  console.log(cartProducts);
   const [currentPage, setCurrentPage] = useState<string>("");
 
   return (

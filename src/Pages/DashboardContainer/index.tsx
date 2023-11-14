@@ -38,6 +38,7 @@ import Profile from "../Profile";
 import Wallet from "../Wallet";
 import Notifications from "../Notifications";
 import Verification from "../Verification";
+import BottomTabs from "../BottomTabs";
 
 interface FetchProductProps {
   page: number;
@@ -186,6 +187,7 @@ export default function DashboardContainer() {
         <Route path="/notifications" element={<Notifications />} />
         <Route path="/verification" element={<Verification />} />
       </Routes>
+      <BottomTabs />
     </AppContext.Provider>
   );
 }
