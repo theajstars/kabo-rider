@@ -12,7 +12,7 @@ import { AppContext } from "../DashboardContainer";
 import { PerformRequest, usePerformRequest } from "../../Lib/PerformRequest";
 import { Endpoints } from "../../Lib/Endpoints";
 import { GetProductsResponse, NonPaginatedResponse } from "../../Lib/Responses";
-import { Product, RiderStats } from "../../Lib/Types";
+import { NotificationResponse, Product, RiderStats } from "../../Lib/Types";
 
 export default function Notifications() {
   const navigate = useNavigate();
@@ -36,14 +36,14 @@ export default function Notifications() {
   const [isLoading, setLoading] = useState<boolean>(false);
 
   const { data: riderNotifications } = usePerformRequest<
-    any,
-    NonPaginatedResponse<any>
+    NotificationResponse,
+    NonPaginatedResponse<NotificationResponse>
   >({
     method: "POST",
     url: Endpoints.GetNotifications,
     body: { token: Cookies.get("token") },
   });
-  console.log(riderNotifications?.data);
+  console.log(riderNotifications?.data.orders);
   return (
     <div
       className="notifications-container flex-col width-100"

@@ -252,6 +252,17 @@ export interface Bank {
   bank_code: string;
   bank_name: string;
 }
+
+export interface NotificationResponse {
+  orders: Notification[];
+  count: number;
+  notice: string;
+}
+export interface Notification {
+  reference_code: string;
+  address: string;
+  details: string;
+}
 export interface PaystackConfigProps {
   reference: string;
   amount: number;
