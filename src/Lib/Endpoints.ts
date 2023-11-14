@@ -23,6 +23,7 @@ const Endpoints = {
   GetRiderStats: "/rider/details",
 
   GetNotifications: "/rider/notification",
+  AcceptDelivery: "/order/accept-delivery",
 
   GetProducts: "/store/products",
   SearchStores: "/store/search",

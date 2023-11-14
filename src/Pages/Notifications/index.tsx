@@ -95,7 +95,20 @@ export default function Notifications() {
     }
   };
 
-  const acceptOrder = async () => {};
+  const AcceptOrder = async () => {
+    setOrderAccepting(true);
+    const r = await PerformRequest({
+      method: "POST",
+      route: Endpoints.AcceptDelivery,
+      data: {
+        token: Cookies.get("token"),
+        reference_code: currentOrder?.reference_code,
+      },
+    }).catch(() => {
+      setOrderAccepting(false);
+    });
+    setOrderAccepting(false);
+  };
 
   return (
     <div
@@ -172,7 +185,10 @@ export default function Notifications() {
                         <span className="px-14 fw-600">Order Details</span>
                       </div>
                       {isOrderLoading ? (
-                        <ProgressCircle />
+                        <span className="flex-row align-center justify-center width-100">
+                          Loading&nbsp;
+                          <ProgressCircle />
+                        </span>
                       ) : (
                         <>
                           {currentOrder && (
@@ -260,6 +276,8 @@ export default function Notifications() {
                                 variant="contained"
                                 color="primary"
                                 sx={{ height: "40px", fontSize: "14px" }}
+                                onClick={AcceptOrder}
+                                disabled={isOrderAccepting}
                               >
                                 {isOrderAccepting ? (
                                   <ProgressCircle />
