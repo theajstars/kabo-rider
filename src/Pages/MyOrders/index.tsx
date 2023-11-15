@@ -15,6 +15,9 @@ import {
   TableRow,
   TableBody,
 } from "@mui/material";
+
+import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
+
 import { useToasts } from "react-toast-notifications";
 import Cookies from "js-cookie";
 
@@ -122,6 +125,33 @@ export default function MyOrders() {
     setOrderAccepting(false);
   };
 
+  const containerStyle = {
+    width: "400px",
+    height: "400px",
+  };
+
+  const center = {
+    lat: -3.745,
+    lng: -38.523,
+  };
+  const { isLoaded: isMapLoaded } = useJsApiLoader({
+    id: "google-map-script",
+    googleMapsApiKey: "AIzaSyBP36yIMHK0Fk1EFDoRNt_nLqadIm5wlMc",
+  });
+
+  const [map, setMap] = React.useState<any>(null);
+
+  const onMapLoad = React.useCallback(function callback(map: any) {
+    // This is just an example of getting and using the map instance!!! don't just blindly copy!
+    const bounds = new window.google.maps.LatLngBounds(center);
+    map.fitBounds(bounds);
+
+    setMap(map);
+  }, []);
+
+  const onMapUnmount = React.useCallback(function callback(map: any) {
+    setMap(null);
+  }, []);
   return (
     <div
       className="notifications-container flex-col width-100"
@@ -200,7 +230,7 @@ export default function MyOrders() {
                       setOrderModalVisible(false);
                     }}
                   >
-                    <div className="notification-modal flex-col">
+                    <div className="order-modal flex-col">
                       <div className="flex-row width-100 align-center justify-center">
                         <span className="px-14 fw-600">Order Details</span>
                       </div>
@@ -213,6 +243,20 @@ export default function MyOrders() {
                         <>
                           {currentOrder && (
                             <>
+                              {isMapLoaded && (
+                                <div className="flex-row width-100 align-center justify-center">
+                                  <GoogleMap
+                                    mapContainerStyle={containerStyle}
+                                    center={center}
+                                    zoom={10}
+                                    onLoad={onMapLoad}
+                                    onUnmount={onMapUnmount}
+                                  >
+                                    {/* Child components, such as markers, info windows, etc. */}
+                                    <></>
+                                  </GoogleMap>
+                                </div>
+                              )}
                               <div className="flex-row modal-row">
                                 <span className="px-15 fw-600">
                                   Reference Code

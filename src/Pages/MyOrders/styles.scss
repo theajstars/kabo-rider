@@ -7,7 +7,7 @@
   padding: 0 20px;
   margin-top: 40px;
 }
-.notification-modal {
+.order-modal {
   height: 600px;
   width: 600px;
   background-color: $White;
@@ -23,6 +23,7 @@
   .modal-row {
     width: 100%;
     justify-content: space-between;
+    margin: 4px 0px;
   }
   @media screen and (max-width: 650px) {
     & {
