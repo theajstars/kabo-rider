@@ -24,6 +24,7 @@ import { AppContext } from "../DashboardContainer";
 import { PerformRequest, usePerformRequest } from "../../Lib/PerformRequest";
 import { Endpoints } from "../../Lib/Endpoints";
 import {
+  DefaultResponse,
   GetOrdersResponse,
   GetProductsResponse,
   NonPaginatedResponse,
@@ -96,8 +97,9 @@ export default function Notifications() {
   };
 
   const AcceptOrder = async () => {
+    removeAllToasts();
     setOrderAccepting(true);
-    const r = await PerformRequest({
+    const r: DefaultResponse = await PerformRequest({
       method: "POST",
       route: Endpoints.AcceptDelivery,
       data: {
@@ -107,6 +109,12 @@ export default function Notifications() {
     }).catch(() => {
       setOrderAccepting(false);
     });
+    const { status, message } = r.data;
+    if (status === "success") {
+      addToast("Order activated!", { appearance: "success" });
+    } else {
+      addToast("Order cannot be activated!", { appearance: "error" });
+    }
     setOrderAccepting(false);
   };
 

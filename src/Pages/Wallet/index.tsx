@@ -254,7 +254,7 @@ export default function Wallet() {
                   </div>
                 </CopyToClipboard>
               </Grid>
-              <Grid item className="actions-grid-item">
+              {/* <Grid item className="actions-grid-item">
                 <div className="flex-col justify-between transfer">
                   <div className="flex-row align-center">
                     <span className="text-white px-16 fw-500 label">
@@ -300,7 +300,7 @@ export default function Wallet() {
                     {isLoading ? <ProgressCircle /> : "Continue"}
                   </button>
                 </div>
-              </Grid>
+              </Grid> */}
               <Grid item className="actions-grid-item">
                 <div className="flex-col justify-between user-bank">
                   <div className="flex-row width-100 justify-between align-center">
