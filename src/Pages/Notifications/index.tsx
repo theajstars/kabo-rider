@@ -102,7 +102,7 @@ export default function Notifications() {
       route: Endpoints.AcceptDelivery,
       data: {
         token: Cookies.get("token"),
-        reference_code: currentOrder?.reference_code,
+        reference_code: [currentOrder?.reference_code],
       },
     }).catch(() => {
       setOrderAccepting(false);

@@ -12,6 +12,7 @@
   width: 600px;
   background-color: $White;
   position: fixed;
+  overflow-y: auto;
   margin-left: -300px;
   margin-top: -300px;
   left: 50%;
@@ -22,5 +23,11 @@
   .modal-row {
     width: 100%;
     justify-content: space-between;
+  }
+  @media screen and (max-width: 650px) {
+    & {
+      width: 90vw;
+      margin-left: -45vw;
+    }
   }
 }
