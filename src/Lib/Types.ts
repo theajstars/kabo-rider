@@ -159,6 +159,8 @@ export interface Order {
   shipping: [
     {
       address: string;
+      longitude: number;
+      latitude: number;
       details: string;
       deliveryTracking: null | string;
     }

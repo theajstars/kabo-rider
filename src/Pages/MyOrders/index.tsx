@@ -143,7 +143,10 @@ export default function MyOrders() {
 
   const onMapLoad = React.useCallback(function callback(map: any) {
     // This is just an example of getting and using the map instance!!! don't just blindly copy!
-    const bounds = new window.google.maps.LatLngBounds(center);
+    const bounds = new window.google.maps.LatLngBounds({
+      lat: currentOrder?.shipping[0].latitude ?? 0,
+      lng: currentOrder?.shipping[0].longitude ?? 0,
+    });
     map.fitBounds(bounds);
 
     setMap(map);
@@ -247,9 +250,12 @@ export default function MyOrders() {
                                 <div className="flex-row width-100 align-center justify-center">
                                   <GoogleMap
                                     mapContainerStyle={containerStyle}
-                                    center={center}
-                                    zoom={10}
-                                    onLoad={onMapLoad}
+                                    center={{
+                                      lat: currentOrder.shipping[0].latitude,
+                                      lng: currentOrder.shipping[0].longitude,
+                                    }}
+                                    zoom={30}
+                                    // onLoad={onMapLoad}
                                     onUnmount={onMapUnmount}
                                   >
                                     {/* Child components, such as markers, info windows, etc. */}
