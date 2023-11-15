@@ -77,7 +77,6 @@ export default function MyOrders() {
       order_status: "Delivery",
     },
   });
-  console.log(orders?.data);
 
   const [currentOrder, setCurrentOrder] = useState<Order | null>(null);
   const [isOrderModalVisible, setOrderModalVisible] = useState<boolean>(false);
@@ -98,6 +97,7 @@ export default function MyOrders() {
       addToast("An error occurred!", { appearance: "error" });
     });
     setOrderLoading(false);
+    console.log(r.data);
     if (r && r.data && r.data.status === "success") {
       setCurrentOrder(r.data.data[0]);
     }
