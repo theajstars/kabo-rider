@@ -16,7 +16,12 @@ import {
   TableBody,
 } from "@mui/material";
 
-import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
+import {
+  GoogleMap,
+  useJsApiLoader,
+  Marker,
+  InfoWindow,
+} from "@react-google-maps/api";
 
 import { useToasts } from "react-toast-notifications";
 import Cookies from "js-cookie";
@@ -258,8 +263,25 @@ export default function MyOrders() {
                                     // onLoad={onMapLoad}
                                     onUnmount={onMapUnmount}
                                   >
-                                    {/* Child components, such as markers, info windows, etc. */}
-                                    <></>
+                                    <Marker
+                                      //onLoad={onLoad}
+                                      position={{
+                                        lat: currentOrder.shipping[0].latitude,
+                                        lng: currentOrder.shipping[0].longitude,
+                                      }}
+                                    >
+                                      <InfoWindow
+                                        options={{ maxWidth: 100 }}
+                                        position={{
+                                          lat: currentOrder.shipping[0]
+                                            .latitude,
+                                          lng: currentOrder.shipping[0]
+                                            .longitude,
+                                        }}
+                                      >
+                                        <span>Delivery</span>
+                                      </InfoWindow>
+                                    </Marker>
                                   </GoogleMap>
                                 </div>
                               )}
