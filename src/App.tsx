@@ -13,6 +13,7 @@ import ResetPassword from "./Pages/ResetPassword";
 import Error404 from "./Pages/Error404";
 import Notifications from "./Pages/Notifications";
 import Verification from "./Pages/Verification";
+import MyOrders from "./Pages/MyOrders";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
             <Route path="/dashboard/profile" element={<Profile />} />
             <Route path="/dashboard/wallet" element={<Wallet />} />
             <Route path="/dashboard/verification" element={<Verification />} />
+            <Route path="/dashboard/orders" element={<MyOrders />} />
             <Route
               path="/dashboard/notifications"
               element={<Notifications />}

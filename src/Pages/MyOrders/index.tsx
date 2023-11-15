@@ -28,6 +28,7 @@ import {
   GetOrdersResponse,
   GetProductsResponse,
   NonPaginatedResponse,
+  PaginatedResponse,
 } from "../../Lib/Responses";
 import {
   Notification as RiderNotification,
@@ -38,7 +39,7 @@ import {
 } from "../../Lib/Types";
 import ProgressCircle from "../../Misc/ProgressCircle";
 
-export default function Notifications() {
+export default function MyOrders() {
   const navigate = useNavigate();
   const { addToast, removeAllToasts } = useToasts();
   const riderContext = useContext(AppContext);
@@ -61,16 +62,19 @@ export default function Notifications() {
   const [isOrderLoading, setOrderLoading] = useState<boolean>(false);
   const [isOrderAccepting, setOrderAccepting] = useState<boolean>(false);
 
-  const { data: riderNotifications, isLoading: isNotificationsLoading } =
-    usePerformRequest<
-      NotificationResponse,
-      NonPaginatedResponse<NotificationResponse>
-    >({
-      method: "POST",
-      url: Endpoints.GetNotifications,
-      body: { token: Cookies.get("token") },
-    });
-  console.log(riderNotifications?.data.orders);
+  const { data: orders, isLoading: isOrdersLoading } = usePerformRequest<
+    Order[],
+    PaginatedResponse<Order[]>
+  >({
+    method: "POST",
+    url: Endpoints.GetOrders,
+    body: {
+      token: Cookies.get("token"),
+      account: "rider",
+      order_status: "Delivery",
+    },
+  });
+  console.log(orders?.data);
 
   const [currentOrder, setCurrentOrder] = useState<Order | null>(null);
   const [isOrderModalVisible, setOrderModalVisible] = useState<boolean>(false);
@@ -134,13 +138,13 @@ export default function Notifications() {
 
           <br />
 
-          {isNotificationsLoading ? (
+          {isOrdersLoading ? (
             <div className="flex-row width-100 justify-center align-center">
               <ProgressCircle />
             </div>
           ) : (
             <>
-              {riderNotifications?.data.orders.length === 0 ? (
+              {orders?.data.length === 0 ? (
                 <Alert severity="info" sx={{ width: "100%", padding: "10px" }}>
                   <AlertTitle>There are no notifications</AlertTitle>
                 </Alert>
@@ -156,12 +160,18 @@ export default function Notifications() {
                         </TableRow>
                       </TableHead>
                       <TableBody>
-                        {riderNotifications?.data.orders.map((order) => {
+                        {orders?.data.map((order) => {
                           if (order.reference_code.length > 0) {
                             return (
                               <TableRow key={order.reference_code}>
                                 <TableCell>{order.reference_code}</TableCell>
-                                <TableCell>{order.address}</TableCell>
+                                <TableCell>
+                                  <div className="flex-col">
+                                    {order.shipping.map((shipping) => {
+                                      return <span>{shipping.address}</span>;
+                                    })}
+                                  </div>
+                                </TableCell>
                                 <TableCell>
                                   <Button
                                     sx={{

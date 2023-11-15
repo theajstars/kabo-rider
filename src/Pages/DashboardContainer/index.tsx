@@ -39,6 +39,7 @@ import Wallet from "../Wallet";
 import Notifications from "../Notifications";
 import Verification from "../Verification";
 import BottomTabs from "../BottomTabs";
+import MyOrders from "../MyOrders";
 
 interface FetchProductProps {
   page: number;
@@ -184,6 +185,7 @@ export default function DashboardContainer() {
 
         <Route path="/profile" element={<Profile />} />
         <Route path="/wallet" element={<Wallet />} />
+        <Route path="/orders" element={<MyOrders />} />
         <Route path="/notifications" element={<Notifications />} />
         <Route path="/verification" element={<Verification />} />
       </Routes>
