@@ -14,6 +14,7 @@ import {
   TableCell,
   TableRow,
   TableBody,
+  Chip,
 } from "@mui/material";
 import { useToasts } from "react-toast-notifications";
 import Cookies from "js-cookie";
@@ -203,6 +204,10 @@ export default function Notifications() {
                         <>
                           {currentOrder && (
                             <>
+                              <div className="flex-row modal-row">
+                                <span className="px-15 fw-600">Total Gain</span>
+                                <Chip label="Chip Filled" color="success" />
+                              </div>
                               <div className="flex-row modal-row">
                                 <span className="px-15 fw-600">
                                   Reference Code

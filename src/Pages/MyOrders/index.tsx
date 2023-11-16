@@ -13,6 +13,7 @@ import {
   TableHead,
   TableCell,
   TableRow,
+  Chip,
   TableBody,
 } from "@mui/material";
 
@@ -34,8 +35,6 @@ import { Endpoints } from "../../Lib/Endpoints";
 import {
   DefaultResponse,
   GetOrdersResponse,
-  GetProductsResponse,
-  NonPaginatedResponse,
   PaginatedResponse,
 } from "../../Lib/Responses";
 import {
@@ -108,28 +107,6 @@ export default function MyOrders() {
     }
   };
 
-  const AcceptOrder = async () => {
-    removeAllToasts();
-    setOrderAccepting(true);
-    const r: DefaultResponse = await PerformRequest({
-      method: "POST",
-      route: Endpoints.AcceptDelivery,
-      data: {
-        token: Cookies.get("token"),
-        reference_code: [currentOrder?.reference_code],
-      },
-    }).catch(() => {
-      setOrderAccepting(false);
-    });
-    const { status, message } = r.data;
-    if (status === "success") {
-      addToast("Order activated!", { appearance: "success" });
-    } else {
-      addToast("Order cannot be activated!", { appearance: "error" });
-    }
-    setOrderAccepting(false);
-  };
-
   const containerStyle = {
     width: "400px",
     height: "400px",
@@ -145,17 +122,6 @@ export default function MyOrders() {
   });
 
   const [map, setMap] = React.useState<any>(null);
-
-  const onMapLoad = React.useCallback(function callback(map: any) {
-    // This is just an example of getting and using the map instance!!! don't just blindly copy!
-    const bounds = new window.google.maps.LatLngBounds({
-      lat: currentOrder?.shipping[0].latitude ?? 0,
-      lng: currentOrder?.shipping[0].longitude ?? 0,
-    });
-    map.fitBounds(bounds);
-
-    setMap(map);
-  }, []);
 
   const onMapUnmount = React.useCallback(function callback(map: any) {
     setMap(null);
@@ -286,6 +252,10 @@ export default function MyOrders() {
                                 </div>
                               )}
                               <div className="flex-row modal-row">
+                                <span className="px-15 fw-600">Total Gain</span>
+                                <Chip label="Chip Filled" color="success" />
+                              </div>
+                              <div className="flex-row modal-row">
                                 <span className="px-15 fw-600">
                                   Reference Code
                                 </span>
@@ -364,19 +334,6 @@ export default function MyOrders() {
                                   );
                                 })}
                               </div>
-                              <Button
-                                variant="contained"
-                                color="primary"
-                                sx={{ height: "40px", fontSize: "14px" }}
-                                onClick={AcceptOrder}
-                                disabled={isOrderAccepting}
-                              >
-                                {isOrderAccepting ? (
-                                  <ProgressCircle />
-                                ) : (
-                                  "Accept Order"
-                                )}
-                              </Button>
                             </>
                           )}
                         </>
