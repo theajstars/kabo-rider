@@ -33,7 +33,6 @@ interface BankForm {
 }
 interface WalletTransferForm {
   amount: string;
-  walletID: string;
 }
 export default function Wallet() {
   const navigate = useNavigate();
@@ -52,7 +51,6 @@ export default function Wallet() {
   const [walletTransferForm, setWalletTransferForm] =
     useState<WalletTransferForm>({
       amount: "",
-      walletID: "",
     });
 
   useEffect(() => {
@@ -122,31 +120,42 @@ export default function Wallet() {
     }
   };
 
-  const PerformWalletTransfer = async () => {
-    const { amount, walletID } = walletTransferForm;
+  const WithdrawFromWallet = async () => {
     removeAllToasts();
-    if (walletID.length === 0) {
-      addToast("Please enter a valid Wallet ID", { appearance: "error" });
-    }
+    const walletID = riderContext?.wallet?.wallet_id;
+    const balance = riderContext?.wallet?.available_balance;
+    const { amount } = walletTransferForm;
+
     if (isNaN(parseInt(amount)) || parseInt(amount) < 100) {
       addToast("Minimum transfer amount is ₦100", { appearance: "error" });
     }
-    if (parseInt(amount) >= 100 && walletID.length > 0) {
-      setLoading(true);
-      const r: DefaultResponse = await PerformRequest({
-        route: Endpoints.ProcessWalletTransfer,
-        data: { wallet_id: walletID, amount, token: Cookies.get("token") },
-        method: "POST",
-      }).catch(() => {
+    if (parseInt(amount) > parseInt(balance ?? "")) {
+      addToast("Amount exceeds current balance!");
+    } else {
+      if (parseInt(amount) >= 100) {
+        setLoading(true);
+        const r: DefaultResponse = await PerformRequest({
+          route: Endpoints.ProcessWalletTransfer,
+          data: {
+            wallet_id: walletID,
+            amount: balance,
+            token: Cookies.get("token"),
+          },
+          method: "POST",
+        }).catch(() => {
+          setLoading(false);
+        });
         setLoading(false);
-      });
-      setLoading(false);
-      const status = r.data && r.data.status ? r.data.status : "error";
-      addToast(r.data.message, {
-        appearance: status === "success" ? "success" : "error",
-      });
+        const status = r.data && r.data.status ? r.data.status : "error";
+        addToast(r.data.message, {
+          appearance: status === "success" ? "success" : "error",
+        });
+        if (status === "success") {
+          window.location.reload();
+        }
 
-      console.log(r);
+        console.log(r);
+      }
     }
   };
   return (
@@ -254,11 +263,11 @@ export default function Wallet() {
                   </div>
                 </CopyToClipboard>
               </Grid>
-              {/* <Grid item className="actions-grid-item">
+              <Grid item className="actions-grid-item">
                 <div className="flex-col justify-between transfer">
                   <div className="flex-row align-center">
                     <span className="text-white px-16 fw-500 label">
-                      Wallet Transfer
+                      Withdraw Funds
                     </span>
                     &nbsp; &nbsp;
                     <span className="icon px-20 flex-row align-center justify-center text-white">
@@ -266,7 +275,7 @@ export default function Wallet() {
                     </span>
                   </div>
 
-                  <input
+                  {/* <input
                     type="text"
                     placeholder="Input Wallet ID"
                     className="input"
@@ -277,7 +286,7 @@ export default function Wallet() {
                         walletID: e.target.value,
                       });
                     }}
-                  />
+                  /> */}
                   <input
                     type="number"
                     value={walletTransferForm.amount}
@@ -293,14 +302,14 @@ export default function Wallet() {
                   <button
                     className="pay"
                     onClick={() => {
-                      PerformWalletTransfer();
+                      WithdrawFromWallet();
                     }}
                     disabled={isLoading}
                   >
                     {isLoading ? <ProgressCircle /> : "Continue"}
                   </button>
                 </div>
-              </Grid> */}
+              </Grid>
               <Grid item className="actions-grid-item">
                 <div className="flex-col justify-between user-bank">
                   <div className="flex-row width-100 justify-between align-center">
