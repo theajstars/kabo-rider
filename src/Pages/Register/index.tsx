@@ -148,7 +148,7 @@ export default function Register() {
               autoFocus
               fullWidth
               id="password"
-              label="password"
+              label="Password"
               size="small"
               type={userFormValues.showPassword ? "text" : "password"}
               value={userFormValues.password}

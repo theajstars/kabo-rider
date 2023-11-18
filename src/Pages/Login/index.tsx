@@ -113,7 +113,7 @@ export default function Login() {
               autoFocus
               fullWidth
               id="password"
-              label="password"
+              label="Password"
               size="small"
               type={formValues.showPassword ? "text" : "password"}
               value={formValues.password}

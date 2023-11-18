@@ -237,7 +237,7 @@ export default function Wallet() {
                 >
                   <div className="flex-col justify-between bank">
                     <span className="text-darker px-16 fw-500 label">
-                      Virtual Account Details
+                      Kabo Wallet Account Details
                     </span>
                     <div className="flex-row align-center">
                       <span className="icon px-20 flex-row align-center justify-center">
